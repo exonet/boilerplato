@@ -4,20 +4,34 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 require('dotenv').config({ silent: true });
 
 module.exports = {
-  entry: [
-    'react-hot-loader/patch',
-    'babel-polyfill',
-    `webpack-dev-server/client?http://${process.env.HOST || 'localhost:3000'}`,
-    'webpack/hot/only-dev-server',
-    './app/client'
-  ],
+  entry: {
+    main: [
+      'react-hot-loader/patch',
+      'babel-polyfill',
+      `webpack-dev-server/client?http://${process.env.HOST || 'localhost:3000'}`,
+      'webpack/hot/only-dev-server',
+      './app/client'
+    ],
+    vendor: [
+      'react',
+      'react-dom',
+      'react-router',
+      'react-redux',
+      'redux',
+      'material-ui',
+    ],
+  },
   output: {
     path: path.join(__dirname, 'dist'),
     publicPath: '/',
-    filename: 'app.[hash].js'
+    filename: '[name].[hash].js',
+    chunkFilename: 'js/[id].chunk.js',
   },
   resolve: {
     extensions: ['.js', '.jsx'],
+  },
+  performance: {
+    hints: process.env.NODE_ENV === 'production' ? "warning" : false
   },
   devtool: 'eval',
   module: {
@@ -40,6 +54,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       hash: false,
       template: './index.hbs'
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor'
     }),
   ],
 };

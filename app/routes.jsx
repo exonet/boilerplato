@@ -1,21 +1,24 @@
 import React, { PropTypes } from 'react';
 import { BrowserRouter, Match, Miss } from 'react-router';
+import LazyRoute from 'lazy-route';
 
 // Import 'default' components.
 import NotFound from './components/NotFound';
-import Home from './routes/Home';
 
 const Routes = () => (
   <BrowserRouter>
     <div className="wrapper">
-      <Match exactly pattern="/" component={Home} />
+      <Match
+        pattern="/"
+        render={props => <LazyRoute {...props} component={import('./routes/Home')} />}
+      />
       <Miss component={NotFound} />
     </div>
   </BrowserRouter>
 );
 
 Routes.propTypes = {
-  store: PropTypes.object, // eslint-disable-line react/forbid-prop-types
+  store: PropTypes.object, // eslint-disable-line react/no-unused-prop-types,react/forbid-prop-types
 };
 
 export default Routes;
