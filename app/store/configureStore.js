@@ -15,10 +15,25 @@ export default (initialState = {}) => {
   };
 };
 
-export const injectReducers = (store, reducers) => {
-  Object.keys(reducers).forEach((name) => {
-    store.local[name] = reducers[name]; // eslint-disable-line no-param-reassign
-  });
 
-  store.replaceReducer(createReducer({ local: store.local }));
+/**
+ * Inject local reducers loaded at a later state into the store.
+ *
+ * @param {Object} store The current store.
+ * @param {Object} localReducers The local reducers to inject.
+ */
+export const injectLocalReducer = (store, localReducers) => {
+  const localNames = Object.keys(localReducers).filter(name => (
+    typeof store.local[name] === 'undefined'
+  ));
+
+  if (localNames.length > 0) {
+    localNames.forEach((name) => {
+      store.local[name] = localReducers[name]; // eslint-disable-line no-param-reassign, max-len
+    });
+
+    store.replaceReducer(createReducer({
+      local: store.local,
+    }));
+  }
 };

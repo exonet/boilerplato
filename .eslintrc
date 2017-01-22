@@ -2,6 +2,24 @@
   "parser": "babel-eslint",
   "extends": "airbnb",
   "globals": {
-    "document": true
+    "document": true,
+    "__CLIENT__": true,
+    "__SERVER__": true,
+    "__DEVELOPMENT__": true,
+    "__SSR__": true
+  },
+  "rules": {
+    "global-require": 0,
+    "no-underscore-dangle": [
+      "error",
+      {
+        "allow": [
+          "__DEVELOPMENT__",
+          "__CLIENT__",
+          "__SERVER__",
+          "__SSR__"
+        ]
+      }
+    ]
   }
 }
