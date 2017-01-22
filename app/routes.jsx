@@ -1,24 +1,20 @@
-import React, { PropTypes } from 'react';
-import { BrowserRouter, Match, Miss } from 'react-router';
-import LazyRoute from 'lazy-route';
+import React from 'react';
+import { Match, Miss } from 'react-router';
 
-// Import 'default' components.
+// Local components.
 import NotFound from './components/NotFound';
+import * as Routes from './config/Routes';
 
-const Routes = () => (
-  <BrowserRouter>
-    <div className="wrapper">
-      <Match
-        pattern="/"
-        render={props => <LazyRoute {...props} component={import('./routes/Home')} />}
-      />
-      <Miss component={NotFound} />
-    </div>
-  </BrowserRouter>
+/**
+ * Create the (rendered) routes component. Based on the Browser/ServerRouter the
+ * appropriate component will be rendered.
+ *
+ * @return {XML} The (active) route.
+ */
+export default () => (
+  <div className="content">
+    <Match exactly pattern="/" component={Routes.Home} />
+    <Match pattern="/about" component={Routes.About} />
+    <Miss component={NotFound} />
+  </div>
 );
-
-Routes.propTypes = {
-  store: PropTypes.object, // eslint-disable-line react/no-unused-prop-types,react/forbid-prop-types
-};
-
-export default Routes;

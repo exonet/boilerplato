@@ -1,12 +1,12 @@
 import React from 'react';
 
 /**
- * The home page.
+ * The about page.
  *
  * @return {XML} The rendered page.
  */
 export default () => (
-  <div className="Home">
-    <h2 className="title">Home</h2>
+  <div className="About">
+    <h2 className="title">About</h2>
   </div>
 );
