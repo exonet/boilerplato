@@ -1,4 +1,4 @@
-/* eslint-disable no-useless-escape, react/no-danger, react/forbid-prop-types */
+/* eslint-disable no-useless-escape, react/no-danger, react/forbid-prop-types, react/require-default-props, max-len */
 import React, { PropTypes } from 'react';
 import { renderToString } from 'react-dom/server';
 
