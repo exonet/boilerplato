@@ -1,3 +1,40 @@
-h2 {
-  font-weight: 200;
+@import '~antd/dist/antd';
+
+html,
+body,
+#app,
+.boilerplato {
+  height: 100%;
+}
+
+.boilerplato {
+
+  .boilerplato-header {
+    .logo {
+      display: flex;
+      align-items: center;
+      max-height: 63px;
+      width: auto;
+      float: left;
+    };
+    color: #fff;
+  }
+
+  .boilerplato-menu {
+    background: transparent;
+    line-height: 64px;
+  }
+
+  .boilerplato-container {
+    padding: 0 50px;
+
+    .boilerplato-breadcrumb {
+      margin: 12px 0;
+    }
+
+    .boilerplato-content {
+      padding: 24px;
+      background: #fff;
+    }
+  }
 }
