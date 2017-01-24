@@ -10,7 +10,7 @@ global.__CLIENT__ = false;
 global.__SERVER__ = true;
 
 // To disable server side rendering, set the __DISABLE_SSR__ boolean to true.
-global.__SSR__ = process.env.SSR;
+global.__SSR__ = process.env.SSR === 'true';
 global.navigator = { userAgent: 'all' };
 
 // Load the app!

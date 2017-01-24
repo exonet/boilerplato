@@ -3,6 +3,8 @@ const webpack = require('webpack');
 const fs = require('fs');
 const path = require('path');
 
+require('dotenv').config({ silent: true });
+
 const getExternals = () => {
   const nodeModules = fs.readdirSync(path.resolve(__dirname, 'node_modules'));
   return nodeModules.reduce((ext, mod) => {
@@ -43,7 +45,7 @@ module.exports = {
       __CLIENT__: false,
       __SERVER__: true,
       __DEVELOPMENT__: false,
-      __SSR__: true,
+      __SSR__: process.env.SSR === 'true',
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
