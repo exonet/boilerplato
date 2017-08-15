@@ -128,18 +128,12 @@ app.all('*', (req, res) => {
   );
 
   if (context.url) {
-    return res.redirect(301, contet.url);
+    return res.redirect(301, context.url);
   }
 
   return res.send(
-    `<!doctype html>
-    ${renderToString(
-      <Html
-        assets={assets}
-        component={view}
-        initialState={{}}
-      />,
-    )}`);
+    `<!doctype html>${renderToString(<Html assets={assets} component={view} initialState={{}} />)}`,
+  );
 });
 
 /*
