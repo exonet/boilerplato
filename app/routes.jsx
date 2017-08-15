@@ -1,5 +1,5 @@
 import React from 'react';
-import { Match, Miss } from 'react-router';
+import { Switch, Route } from 'react-router-dom';
 
 // Local components.
 import NotFound from './components/NotFound';
@@ -13,8 +13,10 @@ import * as Routes from './config/Routes';
  */
 export default () => (
   <div className="content">
-    <Match exactly pattern="/" component={Routes.Home} />
-    <Match pattern="/about" component={Routes.About} />
-    <Miss component={NotFound} />
+    <Switch>
+      <Route exact path="/" component={Routes.Home} />
+      <Route path="/about" component={Routes.About} />
+      <Route component={NotFound} />
+    </Switch>
   </div>
 );

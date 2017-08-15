@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 
 // Local components.
 import Layout from './components/Layout';
@@ -11,6 +11,6 @@ import Layout from './components/Layout';
  */
 export default () => (
   <BrowserRouter>
-    {({ location }) => <Layout location={location} />}
+    <Layout />
   </BrowserRouter>
 );

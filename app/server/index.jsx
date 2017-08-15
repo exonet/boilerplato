@@ -6,7 +6,7 @@ import React from 'react';
 import { renderToString } from 'react-dom/server';
 
 // Routing.
-import { ServerRouter, createServerRenderContext } from 'react-router';
+import { StaticRouter } from 'react-router';
 
 // Store.
 import { Provider } from 'react-redux';
@@ -118,22 +118,17 @@ app.all('*', (req, res) => {
    |--------------------------------------------------------------------------
    */
   const store = configureStore();
-  const context = createServerRenderContext();
+  const context = {};
   const view = (
     <Provider store={store}>
-      <ServerRouter context={context} location={req.url}>
-        {({ location }) => <Layout location={location} />}
-      </ServerRouter>
+      <StaticRouter context={context} location={req.url}>
+        <Layout />
+      </StaticRouter>
     </Provider>
   );
 
-  const result = context.getResult();
-
-  if (result.redirect) {
-    return res.redirect(result.redirect.pathname);
-  } else if (result.missed) {
-    console.log('missed!');
-    return res.redirect('/');
+  if (context.url) {
+    return res.redirect(301, contet.url);
   }
 
   return res.send(
