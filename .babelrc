@@ -5,11 +5,6 @@
     "stage-0"
   ],
   "env": {
-    "development": {
-      "plugins": [
-        "react-hot-loader/babel"
-      ]
-    },
     "production": {
       "presets": [
         "react-optimize"

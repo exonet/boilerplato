@@ -30,10 +30,10 @@ module.exports = {
     __dirname: true,
   },
   module: {
-    loaders: [
+    rules: [
       {
-        loaders: ['babel-loader', 'eslint-loader'],
         test: /\.js|.jsx$/,
+        use: ['babel-loader', 'eslint-loader'],
         include: path.join(__dirname, 'app'),
       },
     ],
@@ -85,6 +85,5 @@ module.exports = {
         keep_fnames: false
       }
     }),
-    new webpack.IgnorePlugin(/(react-hot-loader)/),
   ],
 };

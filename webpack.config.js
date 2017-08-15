@@ -37,10 +37,10 @@ const config = {
     extensions: ['.js', '.jsx'],
   },
   module: {
-    loaders: [
+    rules: [
       {
-        loaders: ['babel-loader'],
         test: /\.js|.jsx$/,
+        use: ['babel-loader'],
         include: path.join(__dirname, 'app'),
       },
     ],
@@ -64,20 +64,20 @@ if (DEV) {
 
   // WebPack Hot Middleware client & HMR plugins
   config.entry.main.unshift(
-    'webpack-hot-middleware/client',
-    'react-hot-loader/patch'
+    'webpack/hot/only-dev-server',
+    'webpack-hot-middleware/client'
   );
 
   // Push extra loaders.
-  config.module.loaders.push(
+  config.module.rules.push(
     {
-      loaders: ['eslint-loader'],
       test: /\.js|.jsx$/,
+      use: ['eslint-loader'],
       include: path.join(__dirname, 'app'),
     },
     {
-      loaders: ['style-loader', 'css-loader', 'sass-loader'],
       test: /\.scss|.css$/,
+      use: ['style-loader', 'css-loader', 'sass-loader'],
     }
   );
 
@@ -90,14 +90,14 @@ if (DEV) {
 
 if (PRODUCTION) {
   // Push extra loaders.
-  config.module.loaders.push({
+  config.module.rules.push({
     test: /\.scss|.css$/,
-    loader: ExtractTextPlugin.extract({
-      fallbackLoader: 'style-loader',
-      loader: [
+    use: ExtractTextPlugin.extract({
+      fallback: 'style-loader',
+      use: [
         {
           loader: 'css-loader',
-          query: {
+          options: {
             sourceMap: false,
             // safe: true,
             calc: false,
@@ -109,7 +109,7 @@ if (PRODUCTION) {
         },
         {
           loader: 'sass-loader',
-          query: {
+          options: {
             sourceMap: false,
             outputStyle: 'compact',
             precision: 6
@@ -159,7 +159,6 @@ if (PRODUCTION) {
         keep_fnames: false
       }
     }),
-    new webpack.IgnorePlugin(/(react-hot-loader)/),
     new webpack.NormalModuleReplacementPlugin(
       /^\.\/config\/Routes$/,
       './config/AsyncRoutes'
