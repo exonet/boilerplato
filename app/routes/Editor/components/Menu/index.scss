@@ -1,0 +1,38 @@
+.Editor .menu {
+  display: flex;
+  flex-flow: column nowrap;
+  align-self: stretch;
+  background-color: #C4CAD0;
+
+  > button {
+    height: 80px;
+    width: 80px;
+    background-color: transparent;
+    border: 0;
+    outline: none;
+    cursor: pointer;
+    font-size: 12px;
+    color: #FFFFFF;
+    display: flex;
+    justify-content: center;
+    flex-flow: column nowrap;
+    align-items: center;
+
+    svg {
+      fill: #FFFFFF !important;
+    }
+
+    .title {
+      margin-top: 5px;
+    }
+
+    &.active {
+      color: #333;
+      background-color: #FCF7FF;
+
+      svg {
+        fill: #333 !important;
+      }
+    }
+  }
+}

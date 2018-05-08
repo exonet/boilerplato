@@ -1,0 +1,40 @@
+$nav-top-bg: #878C8F !global;
+
+.top {
+  background-color: $nav-top-bg;
+  color: #FFF;
+  flex: 0 0 50px;
+
+  ul {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: flex-start;
+    align-content: flex-start;
+
+    margin: 0;
+    padding: 0;
+
+    > li {
+      flex: 0 0 auto;
+      display: flex;
+      list-style-type: none;
+      line-height: 20px;
+
+      &:hover {
+        background-color: darken($nav-top-bg, 5%);
+      }
+
+      > a {
+        &,
+        &:active,
+        &:hover,
+        &:visited {
+          padding: 15px 20px;
+
+          color: #FFF;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

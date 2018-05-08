@@ -5,3 +5,4 @@ import asyncRoute from '../utilities/asyncRoute';
  */
 export const Home = asyncRoute(() => System.import('../routes/Home'));
 export const About = asyncRoute(() => System.import('../routes/About'));
+export const Editor = asyncRoute(() => System.import('../routes/Editor'));
