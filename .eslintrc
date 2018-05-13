@@ -6,7 +6,9 @@
     "__CLIENT__": true,
     "__SERVER__": true,
     "__DEVELOPMENT__": true,
-    "__SSR__": true
+    "__SSR__": true,
+    "__GOOGLE_API_KEY__": true,
+    "__MAPBOX_API_KEY__": true,
   },
   "rules": {
     "global-require": 0,
@@ -17,7 +19,9 @@
           "__DEVELOPMENT__",
           "__CLIENT__",
           "__SERVER__",
-          "__SSR__"
+          "__SSR__",
+          "__GOOGLE_API_KEY__",
+          "__MAPBOX_API_KEY__"
         ]
       }
     ],

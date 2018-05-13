@@ -5,6 +5,9 @@ const path = require('path');
 
 require('dotenv').config({ silent: true });
 
+// Define the current environment.
+const GOOGLE_API_KEY = JSON.stringify(process.env.GOOGLE_API_KEY);
+
 const getExternals = () => {
   const nodeModules = fs.readdirSync(path.resolve(__dirname, 'node_modules'));
   return nodeModules.reduce((ext, mod) => {
@@ -46,6 +49,8 @@ module.exports = {
       __SERVER__: true,
       __DEVELOPMENT__: false,
       __SSR__: process.env.SSR === 'true',
+      __GOOGLE_API_KEY__: GOOGLE_API_KEY,
+      __MAPBOX_API_KEY__: MAPBOX_API_KEY,
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,

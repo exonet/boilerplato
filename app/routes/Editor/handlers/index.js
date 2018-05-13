@@ -2,6 +2,7 @@ import { withState, withHandlers, mapProps, compose } from 'recompose';
 
 const addState = withState('data', 'updateData', {
   active: 'location',
+  address: false,
 });
 
 const addHandlers = withHandlers({
@@ -21,6 +22,10 @@ const addHandlers = withHandlers({
     ...current,
     active: 'cart',
   })),
+  handleAddressChange: ({ updateData }) => (address = false) => updateData(current => ({
+    ...current,
+    address,
+  })),
 });
 
 const addMapping = mapProps(({
@@ -29,6 +34,7 @@ const addMapping = mapProps(({
   goToLabels,
   goToCustomize,
   goToCart,
+  handleAddressChange,
 }) => ({
   data,
   menu: {
@@ -36,6 +42,9 @@ const addMapping = mapProps(({
     goToLabels,
     goToCustomize,
     goToCart,
+  },
+  actions: {
+    handleAddressChange,
   },
 }));
 

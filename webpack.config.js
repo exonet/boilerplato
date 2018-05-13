@@ -9,6 +9,8 @@ require('dotenv').config({ silent: true });
 // Define the current environment.
 const PRODUCTION = process.env.NODE_ENV === 'production';
 const DEV = !PRODUCTION;
+const GOOGLE_API_KEY = JSON.stringify(process.env.GOOGLE_API_KEY);
+const MAPBOX_API_KEY = JSON.stringify(process.env.MAPBOX_API_KEY);
 
 /**
  * @type {Object} Define the config.
@@ -50,6 +52,8 @@ const config = {
       'process.env.NODE_ENV': DEV ? JSON.stringify('development') : JSON.stringify('production'),
       __CLIENT__: true,
       __SERVER__: false,
+      __GOOGLE_API_KEY__: GOOGLE_API_KEY,
+      __MAPBOX_API_KEY__: MAPBOX_API_KEY,
     }),
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
