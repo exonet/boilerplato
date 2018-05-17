@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import Menu from './components/Menu';
 import Form from './components/Form';
+import Preview from './components/Preview';
 
 // Higher order component data.
 import withHandlers from './handlers';
@@ -15,24 +16,13 @@ if (__CLIENT__) require('./index.scss');
  *
  * @return {XML} The rendered page.
  */
-const Editor = ({ data, menu, actions }) => {
-  console.dir(data.address);
-  const url = `https://api.mapbox.com/styles/v1/mapbox/outdoors-v10/static/${data.address.lng},${data.address.lat},10.0,0,0/1280x1280@2x?access_token=${__MAPBOX_API_KEY__}`;
-
-  return (
-    <div className="Editor">
-      <Menu active={data.active} actions={menu} />
-      <Form data={data} actions={actions} />
-      <section className="preview">
-        <div className="maps">
-          {data.address !== false && (
-            <img src={url} alt="map" />
-          )}
-        </div>
-      </section>
-    </div>
-  );
-};
+const Editor = ({ data, menu, actions }) => (
+  <div className="Editor">
+    <Menu active={data.active} actions={menu} />
+    <Form data={data} actions={actions} />
+    <Preview address={data.address} />
+  </div>
+);
 
 Editor.propTypes = {
   data: PropTypes.shape({
