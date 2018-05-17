@@ -80,16 +80,7 @@ app.use('/static', express.static('build/static'));
  | version of the component to the client.
  |
  */
-app.all('*', (req, res) => {
-  /*
-   |--------------------------------------------------------------------------
-   | Render the app.
-   |--------------------------------------------------------------------------
-   */
-  return res.status(200)
-    .send(`<!doctype html>${renderToString(<Html assets={assets} />)}`);
-
-});
+app.all('*', (req, res) => (res.status(200).send(`<!doctype html>${renderToString(<Html assets={assets} />)}`)));
 
 /*
  |--------------------------------------------------------------------------
@@ -108,7 +99,6 @@ app.listen(config.port, config.host, () => {
   console.log(`| Listening at http://${config.host}:${config.port}`);
   console.log('|');
   console.log(`| Running in ${process.env.NODE_ENV} mode.`);
-  console.log(`| Server side rendering: ${(__SSR__ ? 'yes' : 'no')}`);
   console.log('|');
   console.log('|--------------------------------------------------------------------------');
 });

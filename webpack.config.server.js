@@ -50,7 +50,6 @@ module.exports = {
       __CLIENT__: false,
       __SERVER__: true,
       __DEVELOPMENT__: false,
-      __SSR__: process.env.SSR === 'true',
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,
