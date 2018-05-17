@@ -50,6 +50,9 @@ module.exports = {
       __CLIENT__: false,
       __SERVER__: true,
       __DEVELOPMENT__: false,
+      __JIRA_HOST__: JSON.stringify(process.env.JIRA_HOST),
+      __JIRA_USERNAME__: JSON.stringify(process.env.JIRA_USERNAME),
+      __JIRA_PASSWORD__: JSON.stringify(process.env.JIRA_PASSWORD),
     }),
     new webpack.LoaderOptionsPlugin({
       minimize: true,

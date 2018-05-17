@@ -51,6 +51,9 @@ const config = {
       'process.env.NODE_ENV': DEV ? JSON.stringify('development') : JSON.stringify('production'),
       __CLIENT__: true,
       __SERVER__: false,
+      __JIRA_HOST__: JSON.stringify(process.env.JIRA_HOST),
+      __JIRA_USERNAME__: JSON.stringify(process.env.JIRA_USERNAME),
+      __JIRA_PASSWORD__: JSON.stringify(process.env.JIRA_PASSWORD),
     }),
   ],
   optimization: {

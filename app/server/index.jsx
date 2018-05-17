@@ -8,6 +8,9 @@ import { renderToString } from 'react-dom/server';
 // Local components.
 import Html from './components/Html';
 
+// Routes.
+import jiraRoutes from './routes/jira';
+
 // Store.
 import config from '../../config';
 
@@ -70,6 +73,16 @@ if (__DEVELOPMENT__) {
  |
  */
 app.use('/static', express.static('build/static'));
+
+/*
+ |--------------------------------------------------------------------------
+ | Custom routing.
+ |--------------------------------------------------------------------------
+ |
+ | 'jira' accesses the JIRA api and returns sprint results.
+ |
+ */
+app.use('/jira', jiraRoutes());
 
 /*
  |--------------------------------------------------------------------------
