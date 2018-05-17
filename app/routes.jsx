@@ -16,7 +16,6 @@ export default () => (
     <Switch>
       <Route exact path="/" component={Routes.Home} />
       <Route path="/about" component={Routes.About} />
-      <Route path="/editor" component={Routes.Editor} />
       <Route component={NotFound} />
     </Switch>
   </div>

@@ -1,22 +1,21 @@
 /* eslint-disable import/no-extraneous-dependencies,comma-dangle */
 const path = require('path');
 const webpack = require('webpack');
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const AssetsPlugin = require('assets-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 require('dotenv').config({ silent: true });
 
 // Define the current environment.
 const PRODUCTION = process.env.NODE_ENV === 'production';
 const DEV = !PRODUCTION;
-const GOOGLE_API_KEY = JSON.stringify(process.env.GOOGLE_API_KEY);
-const MAPBOX_API_KEY = JSON.stringify(process.env.MAPBOX_API_KEY);
 
 /**
  * @type {Object} Define the config.
  */
 const config = {
   target: 'web',
+  mode: PRODUCTION ? 'production' : 'development',
   performance: {
     hints: PRODUCTION ? 'warning' : false,
   },
@@ -52,14 +51,15 @@ const config = {
       'process.env.NODE_ENV': DEV ? JSON.stringify('development') : JSON.stringify('production'),
       __CLIENT__: true,
       __SERVER__: false,
-      __GOOGLE_API_KEY__: GOOGLE_API_KEY,
-      __MAPBOX_API_KEY__: MAPBOX_API_KEY,
-    }),
-    new webpack.optimize.CommonsChunkPlugin({
-      name: 'vendor',
-      minChunks: 2,
     }),
   ],
+  optimization: {
+    splitChunks: {
+      name: 'vendor',
+      minChunks: 2
+    },
+    noEmitOnErrors: !PRODUCTION,
+  },
 };
 
 if (DEV) {
@@ -85,42 +85,23 @@ if (DEV) {
     }
   );
 
-  // Push extra plugins.
   config.plugins.push(
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.NoEmitOnErrorsPlugin()
   );
 }
 
 if (PRODUCTION) {
+  // Set minimize to true.
+  config.optimization.minimize = true;
+
   // Push extra loaders.
   config.module.rules.push({
     test: /\.scss|.css$/,
-    use: ExtractTextPlugin.extract({
-      fallback: 'style-loader',
-      use: [
-        {
-          loader: 'css-loader',
-          options: {
-            sourceMap: false,
-            // safe: true,
-            calc: false,
-            zindex: false,
-            discardComments: {
-              removeAll: true
-            }
-          }
-        },
-        {
-          loader: 'sass-loader',
-          options: {
-            sourceMap: false,
-            outputStyle: 'compact',
-            precision: 6
-          }
-        }
-      ]
-    })
+    use: [
+      MiniCssExtractPlugin.loader,
+      'css-loader',
+      'sass-loader',
+    ],
   });
 
   // Push extra plugins.
@@ -129,48 +110,13 @@ if (PRODUCTION) {
       minimize: true,
       debug: false
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      sourceMap: false,
-      mangle: {
-        screw_ie8: true,
-        except: []
-      },
-      comments: false,
-      compress: {
-        screw_ie8: true,
-        sequences: true,
-        properties: true,
-        dead_code: true,
-        drop_debugger: true,
-        unsafe: true,
-        conditionals: true,
-        comparisons: true,
-        evaluate: true,
-        booleans: true,
-        loops: true,
-        unused: true,
-        hoist_funs: true,
-        hoist_vars: false,
-        if_return: true,
-        join_vars: true,
-        cascade: true,
-        warnings: false,
-        negate_iife: true,
-        pure_getters: true,
-        pure_funcs: null,
-        drop_console: true,
-        keep_fargs: false,
-        keep_fnames: false
-      }
-    }),
     new webpack.NormalModuleReplacementPlugin(
       /^\.\/config\/Routes$/,
       './config/AsyncRoutes'
     ),
-    new ExtractTextPlugin({
+    new MiniCssExtractPlugin({
       filename: 'css/[name].[chunkhash].css',
-      disable: false,
-      allChunks: true
+      chunkFilename: '[id].[hash].css',
     }),
     new AssetsPlugin({ filename: 'build/assets.json' })
   );

@@ -5,16 +5,8 @@ import express from 'express';
 import React from 'react';
 import { renderToString } from 'react-dom/server';
 
-// Routing.
-import { StaticRouter } from 'react-router';
-
-// Store.
-import { Provider } from 'react-redux';
-import configureStore from '../store/configureStore';
-
 // Local components.
 import Html from './components/Html';
-import Layout from '../containers/App/components/Layout';
 
 // Store.
 import config from '../../config';
@@ -91,49 +83,12 @@ app.use('/static', express.static('build/static'));
 app.all('*', (req, res) => {
   /*
    |--------------------------------------------------------------------------
-   | Set the initialState.
-   |--------------------------------------------------------------------------
-   |
-   | Get the initialState based on the session `me` and `app` properties.
-   | `me` contains data about the logged in user.
-   | `app` contains data about the state of the app.
-   |
-   */
-  const initialState = {};
-
-  /*
-   |--------------------------------------------------------------------------
-   | If SSR is disabled, immediately render the component.
+   | Render the app.
    |--------------------------------------------------------------------------
    */
-  if (!__SSR__) {
-    return res.status(200).send(
-      `<!doctype html>${renderToString(<Html assets={assets} initialState={initialState} />)}`,
-    );
-  }
+  return res.status(200)
+    .send(`<!doctype html>${renderToString(<Html assets={assets} />)}`);
 
-  /*
-   |--------------------------------------------------------------------------
-   | Setup store, routing and history.
-   |--------------------------------------------------------------------------
-   */
-  const store = configureStore();
-  const context = {};
-  const view = (
-    <Provider store={store}>
-      <StaticRouter context={context} location={req.url}>
-        <Layout />
-      </StaticRouter>
-    </Provider>
-  );
-
-  if (context.url) {
-    return res.redirect(301, context.url);
-  }
-
-  return res.send(
-    `<!doctype html>${renderToString(<Html assets={assets} component={view} initialState={{}} />)}`,
-  );
 });
 
 /*
