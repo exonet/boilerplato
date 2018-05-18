@@ -48,6 +48,7 @@
     "express": "^4.16.3",
     "jira-connector": "^2.8.0",
     "mdi-react": "^3.3.0",
+    "moment": "^2.22.1",
     "normalize.css": "^8.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.3.2",
