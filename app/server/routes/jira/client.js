@@ -19,6 +19,7 @@ class Client {
   /**
    * Create the Jira client based on the provided username and password.
    *
+   * @param {string} host The Jira host name to connect to.
    * @param {string} username The username of the Jira account.
    * @param {string} password The password of the Jira account.
    */
@@ -30,24 +31,24 @@ class Client {
   }
 
   /**
-   * Get the currently active Sprint and gather the issue information about the Sprint.
+   * Try finding the sprint by the given boardId and sprintId.
+   *
+   * @param {Number} boardId The ID of the board to get the sprints for.
+   * @param {Number} sprintNumber The sprint to search for.
    *
    * @return {Promise} A promise to get the currently active Sprint.
    */
-  getActiveSprint() {
-    return this.client.board.getSprintsForBoard({
-      boardId: this.boardId,
-      state: 'active',
-    }).then(sprintResponse => (
-      this.getSprintIssues(sprintResponse.values[0].id)
-        .then(issuesResponse => ({
-          ...sprintResponse.values[0],
-          issues_total: issuesResponse.total,
-          issues_done: issuesResponse.issues.filter(issue => (
-            issue.fields.status.name.toLowerCase() === 'done'
-          )).length,
-        }))
-    ));
+  getSprint({ boardId, sprintNumber }) {
+    return this.client.board.getSprintsForBoard({ boardId: this.boardId })
+      .then((response) => {
+        // Try to find the sprint.
+        const result = response.values.find(record => record.name === `Sprint ${sprintNumber}`);
+
+        // If the sprint is found, result, if not reject.
+        return typeof result !== 'undefined' ?
+          Promise.resolve(result) :
+          Promise.reject('Sprint not found');
+      });
   }
 
   /**

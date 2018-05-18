@@ -14,6 +14,9 @@ import jiraRoutes from './routes/jira';
 // Store.
 import config from '../../config';
 
+// Get sprint config.
+import sprintConfig from '../../sprint';
+
 // Define the assets.
 let assets = {};
 
@@ -82,7 +85,7 @@ app.use('/static', express.static('build/static'));
  | 'jira' accesses the JIRA api and returns sprint results.
  |
  */
-app.use('/jira', jiraRoutes());
+app.use('/jira', jiraRoutes(sprintConfig));
 
 /*
  |--------------------------------------------------------------------------
