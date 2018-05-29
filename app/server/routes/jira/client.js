@@ -64,29 +64,26 @@ class Client {
         console.log('Got issues');
 
         return response.issues.length > 0 ?
-          Promise.resolve(response.issues.map((issue) => {
-            // console.log(issue.fields.epic);
-
-            return {
-              key: issue.key,
-              type: issue.fields.issuetype.name,
-              epic: typeof issue.fields.epic !== 'undefined' && issue.fields.epic !== null ?
-                issue.fields.epic.key :
-                null,
-              title: issue.fields.summary,
-              assignee: issue.fields.assignee !== null ?
-                issue.fields.assignee.name :
-                null,
-              completed: issue.fields.status.name === 'Done',
-              created: issue.fields.created,
-              worklogIds: issue.fields.worklog.worklogs.map(item => item.id),
-              timeTracking: {
-                estimate: issue.fields.timetracking.originalEstimateSeconds || 0,
-                spent: issue.fields.timetracking.timeSpentSeconds || 0,
-                remaining: issue.fields.timetracking.remainingEstimateSeconds || 0,
-              },
-            };
-          })) :
+          Promise.resolve(response.issues.map(issue => ({
+            id: issue.id,
+            key: issue.key,
+            type: issue.fields.issuetype.name,
+            epic: typeof issue.fields.epic !== 'undefined' && issue.fields.epic !== null ?
+              issue.fields.epic.key :
+              null,
+            title: issue.fields.summary,
+            assignee: issue.fields.assignee !== null ?
+              issue.fields.assignee.name :
+              null,
+            completed: issue.fields.status.name === 'Done',
+            created: issue.fields.created,
+            worklogIds: issue.fields.worklog.worklogs.map(item => parseInt(item.id, 10)),
+            timeTracking: {
+              estimate: issue.fields.timetracking.originalEstimateSeconds || 0,
+              spent: issue.fields.timetracking.timeSpentSeconds || 0,
+              remaining: issue.fields.timetracking.remainingEstimateSeconds || 0,
+            },
+          }))) :
           Promise.reject(new Error(`Unable to get issues for sprint with ID: ${sprint.id}`));
       },
       () => Promise.reject(new Error('Unable to get issues.'))
@@ -108,19 +105,43 @@ class Client {
           console.log('Got epics');
 
           return response.issues.length > 0 ?
-            Promise.resolve(response.issues.map((issue) => {
-              // console.log(issue.fields.epic);
-
-              return {
-                key: issue.key,
-                name: issue.fields.customfield_10008,
-                title: issue.fields.summary,
-                completed: issue.fields.status.name === 'Done',
-              };
-            })) :
+            Promise.resolve(response.issues.map(issue => ({
+              id: issue.id,
+              key: issue.key,
+              name: issue.fields.customfield_10008,
+              title: issue.fields.summary,
+              completed: issue.fields.status.name === 'Done',
+            }))) :
             Promise.reject(new Error(`Unable to get issues for keys: ${keys.join(', ')}`));
         },
         () => Promise.reject(new Error('Unable to get issues.'))
+      );
+  }
+
+  getWorklogByIds(ids) {
+    console.log('Getting worklogs');
+
+    if (ids.length === 0) {
+      return Promise.resolve([]);
+    }
+
+    return this.client.worklog.worklogList({ ids })
+      .then(
+        (response) => {
+          console.log('Got worklogs');
+
+          return response.length > 0 ?
+            Promise.resolve(response.map(worklog => ({
+              issueId: worklog.issueId,
+              assignee: worklog.author.name,
+              timeSpent: worklog.timeSpentSeconds,
+            }))) :
+            Promise.reject(new Error(`Unable to get worklogs for IDs: ${ids.join(', ')}`));
+        },
+        (error) => {
+          console.dir(error);
+          Promise.reject(new Error('Unable to get worklogs.'));
+        }
       );
   }
 }
