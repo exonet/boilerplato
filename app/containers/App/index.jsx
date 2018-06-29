@@ -1,9 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Deck, Slide, Text, Table, TableHeader, TableHeaderItem, TableBody, TableRow, TableItem } from 'spectacle';
+import { Deck, Slide, Text } from 'spectacle';
+import { Heading } from 'app/spectacle';
 
 // Higher order component data.
 import withHandlers from './handlers';
+import theme from './handlers/theme';
+
+// Local components.
+import Goals from './components/Goals';
+import IssueStats from './components/IssueStats';
 
 // Local SCSS.
 import './index.scss';
@@ -13,39 +19,18 @@ import './index.scss';
  *
  * @return {XML} The rendered application.
  */
-const App = ({ jira }) => {
-  console.dir(jira);
-
-  return (
-    <Deck>
-      <Slide>
-        <div>
-          <Text>{jira.sprint.name}</Text>
-          <Text>{jira.sprint.goal || 'No goal set.'}</Text>
-        </div>
-      </Slide>
-      <Slide>
-        <Text>Goals</Text>
-        <Table>
-          <TableHeader>
-            <TableHeaderItem>Epic</TableHeaderItem>
-            <TableHeaderItem>Description</TableHeaderItem>
-            <TableHeaderItem>?</TableHeaderItem>
-          </TableHeader>
-          <TableBody>
-            {jira.epics.map(epic => (
-              <TableRow key={epic.id}>
-                <TableItem>{epic.name}</TableItem>
-                <TableItem>{epic.title}</TableItem>
-                <TableItem>{epic.completed ? '👌' : '😭'}</TableItem>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </Slide>
-    </Deck>
-  );
-};
+const App = ({ jira }) => (
+  <Deck theme={theme}>
+    <Slide>
+      <div>
+        <Heading>{jira.sprint.name}</Heading>
+        <Text>{jira.sprint.goal || 'No goal set.'}</Text>
+      </div>
+    </Slide>
+    <Slide><Goals jira={jira} /></Slide>
+    <Slide><IssueStats jira={jira} /></Slide>
+  </Deck>
+);
 
 App.propTypes = {
   jira: PropTypes.oneOfType([

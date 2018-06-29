@@ -1,5 +1,12 @@
 {
   "parser": "babel-eslint",
+  "settings": {
+    "import/resolver": {
+      "webpack": {
+        "config": "webpack.eslint.js"
+      }
+    }
+  },
   "extends": "airbnb",
   "globals": {
     "document": true,

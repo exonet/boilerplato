@@ -36,6 +36,9 @@ const config = {
   },
   resolve: {
     extensions: ['.js', '.jsx'],
+    alias: {
+      'app/spectacle': path.resolve(__dirname, 'app/spectacle'),
+    },
   },
   module: {
     rules: [
