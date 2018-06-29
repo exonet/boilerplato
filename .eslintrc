@@ -3,7 +3,7 @@
   "settings": {
     "import/resolver": {
       "webpack": {
-        "config": "webpack.eslint.js"
+        "config": "webpack.config.js"
       }
     }
   },
@@ -15,7 +15,8 @@
     "__DEVELOPMENT__": true,
     "__JIRA_HOST__": true,
     "__JIRA_USERNAME__": true,
-    "__JIRA_PASSWORD__": true
+    "__JIRA_PASSWORD__": true,
+    "SPRINTCONFIG": true,
   },
   "rules": {
     "global-require": 0,
@@ -28,7 +29,8 @@
           "__SERVER__",
           "__JIRA_HOST__",
           "__JIRA_USERNAME__",
-          "__JIRA_PASSWORD__"
+          "__JIRA_PASSWORD__",
+          "SPRINTCONFIG",
         ]
       }
     ],

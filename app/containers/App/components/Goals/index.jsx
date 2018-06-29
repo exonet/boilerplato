@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import {
   Table,
+  TableHeader,
   TableRow,
   TableHeaderItem,
   TableBody,
@@ -11,7 +12,6 @@ import {
 
 import {
   Heading,
-  TableHeader,
   TableText,
   TableTextLeft,
 } from 'app/spectacle';

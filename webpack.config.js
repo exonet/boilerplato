@@ -3,8 +3,10 @@ const path = require('path');
 const webpack = require('webpack');
 const AssetsPlugin = require('assets-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-
 require('dotenv').config({ silent: true });
+
+// Get the sprint details.
+const sprint = require('./sprint');
 
 // Define the current environment.
 const PRODUCTION = process.env.NODE_ENV === 'production';
@@ -38,6 +40,7 @@ const config = {
     extensions: ['.js', '.jsx'],
     alias: {
       'app/spectacle': path.resolve(__dirname, 'app/spectacle'),
+      'app/utilities': path.resolve(__dirname, 'app/utilities'),
     },
   },
   module: {
@@ -57,6 +60,7 @@ const config = {
       __JIRA_HOST__: JSON.stringify(process.env.JIRA_HOST),
       __JIRA_USERNAME__: JSON.stringify(process.env.JIRA_USERNAME),
       __JIRA_PASSWORD__: JSON.stringify(process.env.JIRA_PASSWORD),
+      SPRINTCONFIG: sprint.default,
     }),
   ],
   optimization: {

@@ -9,7 +9,9 @@ import theme from './handlers/theme';
 
 // Local components.
 import Goals from './components/Goals';
-import IssueStats from './components/IssueStats';
+import EpicStatistics from './components/EpicStatistics';
+import IssueStatistics from './components/IssueStatistics';
+import Worklog from './components/Worklog';
 
 // Local SCSS.
 import './index.scss';
@@ -19,18 +21,25 @@ import './index.scss';
  *
  * @return {XML} The rendered application.
  */
-const App = ({ jira }) => (
-  <Deck theme={theme}>
-    <Slide>
-      <div>
-        <Heading>{jira.sprint.name}</Heading>
-        <Text>{jira.sprint.goal || 'No goal set.'}</Text>
-      </div>
-    </Slide>
-    <Slide><Goals jira={jira} /></Slide>
-    <Slide><IssueStats jira={jira} /></Slide>
-  </Deck>
-);
+const App = ({ jira }) => {
+  console.dir(jira);
+  console.dir(SPRINTCONFIG);
+
+  return (
+    <Deck theme={theme}>
+      <Slide>
+        <div>
+          <Heading>{jira.sprint.name}</Heading>
+          <Text>{jira.sprint.goal || 'No goal set.'}</Text>
+        </div>
+      </Slide>
+      <Slide><Goals jira={jira} /></Slide>
+      <Slide><EpicStatistics jira={jira} /></Slide>
+      <Slide><IssueStatistics jira={jira} /></Slide>
+      <Slide><Worklog jira={jira} /></Slide>
+    </Deck>
+  );
+};
 
 App.propTypes = {
   jira: PropTypes.oneOfType([
