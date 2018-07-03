@@ -12,6 +12,8 @@ const sprint = require('./sprint');
 const PRODUCTION = process.env.NODE_ENV === 'production';
 const DEV = !PRODUCTION;
 
+console.dir(sprint.default);
+
 /**
  * @type {Object} Define the config.
  */
@@ -60,7 +62,7 @@ const config = {
       __JIRA_HOST__: JSON.stringify(process.env.JIRA_HOST),
       __JIRA_USERNAME__: JSON.stringify(process.env.JIRA_USERNAME),
       __JIRA_PASSWORD__: JSON.stringify(process.env.JIRA_PASSWORD),
-      SPRINTCONFIG: sprint.default,
+      SPRINTCONFIG: JSON.stringify(sprint.default),
     }),
   ],
   optimization: {

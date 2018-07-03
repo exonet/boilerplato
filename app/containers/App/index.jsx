@@ -5,13 +5,17 @@ import { Heading } from 'app/spectacle';
 
 // Higher order component data.
 import withHandlers from './handlers';
-import theme from './handlers/theme';
+import theme, { retroImage, endImage } from './handlers/theme';
 
 // Local components.
 import Goals from './components/Goals';
+import Burndown from './components/Burndown';
 import EpicStatistics from './components/EpicStatistics';
+import Workload from './components/Workload';
 import IssueStatistics from './components/IssueStatistics';
 import Worklog from './components/Worklog';
+import Retrospective from './components/Retrospective';
+import Discuss from './components/Discuss';
 
 // Local SCSS.
 import './index.scss';
@@ -22,9 +26,7 @@ import './index.scss';
  * @return {XML} The rendered application.
  */
 const App = ({ jira }) => {
-  console.dir(jira);
   console.dir(SPRINTCONFIG);
-
   return (
     <Deck theme={theme}>
       <Slide>
@@ -36,7 +38,14 @@ const App = ({ jira }) => {
       <Slide><Goals jira={jira} /></Slide>
       <Slide><EpicStatistics jira={jira} /></Slide>
       <Slide><IssueStatistics jira={jira} /></Slide>
-      <Slide><Worklog jira={jira} /></Slide>
+      <Slide><Workload jira={jira} /></Slide>
+      <Slide><Burndown /></Slide>
+      <Slide><Worklog jira={jira} users={SPRINTCONFIG.users} /></Slide>
+      <Slide bgImage={retroImage()} bgDarken={0.75}><Retrospective /></Slide>
+      <Slide><Discuss items={SPRINTCONFIG.discussion} /></Slide>
+      <Slide bgImage={endImage()} bgDarken={0.2}>
+        <Heading textColor="#FFFFFF">The end 👋🏻</Heading>
+      </Slide>
     </Deck>
   );
 };

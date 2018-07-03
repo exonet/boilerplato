@@ -36,21 +36,16 @@ export default (config) => {
       .then(
         (issues) => {
           data.issues = [...issues];
-          return client.getWorklogByIds(
-            data.issues
-              .filter(issue => issue.worklogIds.length > 0)
-              .map(issue => issue.worklogIds)
-              .reduce((acc, val) => acc.concat(val), [])
-          );
+
+          return client.getWorklogsByDate(data.sprint.startDate, data.sprint.endDate);
+
+          // return client.getWorklogByIds(worklogIds);
         },
         error => res.send(error),
       )
       .then(
         (worklogs) => {
-          data.issues = data.issues.map(issue => ({
-            ...issue,
-            worklogs: worklogs.filter(worklog => worklog.issueId === issue.id),
-          }));
+          data.worklogs = [...worklogs];
 
           return client.getEpicsByKeys(data.issues.filter(issue => issue.epic !== null).map(issue => issue.epic));
         },

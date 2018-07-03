@@ -23,7 +23,7 @@ const EpicStatistics = ({ jira }) => {
   };
 
   return [
-    <Heading key="s2-title">Epic statistics</Heading>,
+    <Heading key="s2-title">🤓 Epic statistics</Heading>,
     <Table key="s2-table">
       <TableHeader>
         <TableRow>

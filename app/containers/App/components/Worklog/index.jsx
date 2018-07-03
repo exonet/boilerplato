@@ -14,71 +14,82 @@ import {
   Heading,
   TableText,
   TableTextLeft,
+  TableTextRight,
 } from 'app/spectacle';
 
 import { time } from 'app/utilities';
 
-const Worklog = ({ jira }) => [
-  <Heading key="s4-worklog">Worklog</Heading>,
-  <Table key="s4-table">
-    <TableHeader>
-      <TableRow>
-        <TableHeaderItem>
-          <TableTextLeft>Name</TableTextLeft>
-        </TableHeaderItem>
-        <TableHeaderItem>
-          <TableTextLeft>Days</TableTextLeft>
-        </TableHeaderItem>
-        <TableHeaderItem>
-          <TableTextLeft>Expected</TableTextLeft>
-        </TableHeaderItem>
-        <TableHeaderItem>
-          <TableTextLeft>Logged</TableTextLeft>
-        </TableHeaderItem>
-        <TableHeaderItem>
-          <TableText>?</TableText>
-        </TableHeaderItem>
-      </TableRow>
-    </TableHeader>
-    <TableBody>
-      {jira.users.map((user) => {
-        const logged = jira.issues.filter(issue => (
-          issue.worklogs.filter(({ assignee }) => assignee === user.name).length > 0
-        ).reduce((acc, cur) => (
-          acc + cur
-            .filter(({ assignee }) => assignee === user.name)
-            .reduce((acc2, cur2) => (cur2.timeSpent + acc2), 0)
-        ), 0));
-        console.log(logged);
+const Worklog = ({ jira, users }) => {
+  const userData = jira.users.map((user) => {
+    const timeSpent = jira.worklogs
+      .filter(item => item.assignee === user.name)
+      .reduce((total, worklog) => total + worklog.timeSpent, 0);
 
-        return (
+    return {
+      name: user.name,
+      days: users[user.name].expected,
+      timeExpected: users[user.name].expected * 7 * 60 * 60,
+      timeSpent,
+    };
+  });
+
+  return [
+    <Heading key="s4-worklog">🛠 Worklog</Heading>,
+    <Table key="s4-table">
+      <TableHeader>
+        <TableRow>
+          <TableHeaderItem>
+            <TableTextLeft>Name</TableTextLeft>
+          </TableHeaderItem>
+          <TableHeaderItem>
+            <TableTextLeft>Days</TableTextLeft>
+          </TableHeaderItem>
+          <TableHeaderItem>
+            <TableTextRight>Expected</TableTextRight>
+          </TableHeaderItem>
+          <TableHeaderItem>
+            <TableTextRight>Logged</TableTextRight>
+          </TableHeaderItem>
+          <TableHeaderItem>
+            <TableText>?</TableText>
+          </TableHeaderItem>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {userData.map(user => (
           <TableRow key={user.name}>
             <TableItem>
               <TableTextLeft>{user.name}</TableTextLeft>
             </TableItem>
             <TableItem>
-              <TableTextLeft>{SPRINTCONFIG.users[user.name].expected}</TableTextLeft>
+              <TableTextLeft>{user.days}</TableTextLeft>
             </TableItem>
             <TableItem>
-              <TableTextLeft>
-                {time(SPRINTCONFIG.users[user.name].expected * 7 * 60 * 60).readable()}
-              </TableTextLeft>
+              <TableTextRight>
+                {time(user.timeExpected).readable()}
+              </TableTextRight>
             </TableItem>
             <TableItem>
-              <TableText>{time(logged).readable()}</TableText>
+              <TableTextRight>
+                {time(user.timeSpent).readable()}
+              </TableTextRight>
+            </TableItem>
+            <TableItem>
+              <TableText>{user.timeExpected <= user.timeSpent ? '👌' : '😭'}</TableText>
             </TableItem>
           </TableRow>
-        );
-      })}
-    </TableBody>
-  </Table>,
-];
+        ))}
+      </TableBody>
+    </Table>,
+  ];
+};
 
 Worklog.propTypes = {
   jira: PropTypes.oneOfType([
     PropTypes.bool,
     PropTypes.object,
   ]).isRequired,
+  users: PropTypes.object.isRequired, // eslint-disable-line react/forbid-prop-types
 };
 
 export default Worklog;

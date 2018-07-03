@@ -17,7 +17,7 @@ import {
 } from 'app/spectacle';
 
 const Goals = ({ jira }) => [
-  <Heading key="s1-title">Goals</Heading>,
+  <Heading key="s1-title">🔥 Goals</Heading>,
   <Table key="s1-table">
     <TableHeader>
       <TableRow>
@@ -42,7 +42,7 @@ const Goals = ({ jira }) => [
             <TableTextLeft>{epic.title}</TableTextLeft>
           </TableItem>
           <TableItem>
-            <TableText>{epic.completed ? '👌' : '😭'}</TableText>
+            <TableText>{epic.completed ? '😍' : '😭'}</TableText>
           </TableItem>
         </TableRow>
       ))}

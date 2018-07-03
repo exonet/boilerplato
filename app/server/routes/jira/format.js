@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export default ({ sprint, epics, issues }) => {
+export default ({ sprint, epics, issues, worklogs }) => {
   const totalIssues = issues.length;
   const completedIssues = issues.filter(issue => issue.completed).length;
 
@@ -57,11 +57,12 @@ export default ({ sprint, epics, issues }) => {
         },
         issues: epicIssues,
       };
-    }),
+    }).sort((a, b) => a.key.localeCompare(b.key, 'en', { numeric: true })),
   };
 
   return {
     ...data,
+    worklogs,
     issues,
   };
 };

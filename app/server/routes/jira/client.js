@@ -1,4 +1,5 @@
 import JiraClient from 'jira-connector';
+import moment from 'moment';
 
 class Client {
   /**
@@ -78,6 +79,12 @@ class Client {
             completed: issue.fields.status.name === 'Done',
             created: issue.fields.created,
             worklogIds: issue.fields.worklog.worklogs.map(item => parseInt(item.id, 10)),
+            worklogs: issue.fields.worklog.worklogs.map(item => ({
+              id: parseInt(item.id, 10),
+              issueId: item.issueId,
+              assignee: item.author.name,
+              timeSpent: item.timeSpentSeconds,
+            })),
             timeTracking: {
               estimate: issue.fields.timetracking.originalEstimateSeconds || 0,
               spent: issue.fields.timetracking.timeSpentSeconds || 0,
@@ -118,31 +125,52 @@ class Client {
       );
   }
 
-  getWorklogByIds(ids) {
-    console.log('Getting worklogs');
-
-    if (ids.length === 0) {
-      return Promise.resolve([]);
-    }
-
-    return this.client.worklog.worklogList({ ids })
-      .then(
-        (response) => {
-          console.log('Got worklogs');
-
-          return response.length > 0 ?
-            Promise.resolve(response.map(worklog => ({
-              issueId: worklog.issueId,
-              assignee: worklog.author.name,
-              timeSpent: worklog.timeSpentSeconds,
-            }))) :
-            Promise.reject(new Error(`Unable to get worklogs for IDs: ${ids.join(', ')}`));
-        },
-        (error) => {
-          console.dir(error);
-          Promise.reject(new Error('Unable to get worklogs.'));
+  getWorklogsByDate(startDate, endDate) {
+    return this.client.search.search({
+      jql: `worklogDate >= ${moment(startDate).format('YYYY-MM-DD')} AND worklogDate < ${moment(endDate).add(1, 'd').format('YYYY-MM-DD')}`,
+      fields: ['worklog'],
+      maxResults: 1000,
+    })
+      .then((response) => {
+        // Get the worklog IDs.
+        if (response.issues.length === 0) {
+          return Promise.resolve([]);
         }
-      );
+
+        const nextItems = [];
+        const worklogs = response.issues.reduce((items, issue) => {
+          if (issue.fields.worklog.maxResults < issue.fields.worklog.total) {
+            nextItems.push(issue);
+
+            return items.concat([]);
+          }
+
+          return (
+            items.concat(issue.fields.worklog.worklogs.map(item => ({
+              issueId: item.issueId,
+              assignee: item.author.name,
+              timeSpent: item.timeSpentSeconds,
+            }))));
+        }, []);
+
+        if (nextItems.length === 0) {
+          return Promise.resolve(worklogs);
+        }
+
+        return Promise.all(nextItems.map(issue => (
+          this.client.issue.getWorkLogs({ issueId: issue.id })
+        ))).then(results => {
+          const next = results.reduce((all, response) => (
+            all.concat(response.worklogs.map(item => ({
+              issueId: item.issueId,
+              assignee: item.author.name,
+              timeSpent: item.timeSpentSeconds,
+            })))
+          ), []);
+
+          return Promise.resolve(worklogs.concat(next));
+        });
+      });
   }
 }
 

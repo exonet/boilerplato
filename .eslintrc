@@ -16,7 +16,7 @@
     "__JIRA_HOST__": true,
     "__JIRA_USERNAME__": true,
     "__JIRA_PASSWORD__": true,
-    "SPRINTCONFIG": true,
+    "SPRINTCONFIG": true
   },
   "rules": {
     "global-require": 0,
@@ -30,10 +30,11 @@
           "__JIRA_HOST__",
           "__JIRA_USERNAME__",
           "__JIRA_PASSWORD__",
-          "SPRINTCONFIG",
+          "SPRINTCONFIG"
         ]
       }
     ],
+    "jsx-a11y/accessible-emoji": 0,
     "jsx-a11y/anchor-is-valid": [
       "error",
       {
