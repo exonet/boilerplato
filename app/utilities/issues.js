@@ -1,5 +1,6 @@
 export const defaultIssues = [
   'time spent pr',
+  'create sprint review',
   'create sprint preview',
   'release the beast',
   'prepare next sprint',
