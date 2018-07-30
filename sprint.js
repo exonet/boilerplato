@@ -1,43 +1,30 @@
 export default {
   boardId: 2,
-  sprintNumber: 36,
+  sprintNumber: 37,
   users: {
     'f.ankersmit': {
-      expected: 15,
+      expected: 16,
     },
     'p.vanmeijgaard': {
-      expected: 23,
+      expected: 11,
     },
     'r.janssen': {
-      expected: 21.5,
+      expected: 8,
     },
     'r.splithof': {
-      expected: 14,
+      expected: 18,
     },
     't.siebers': {
-      expected: 20,
+      expected: 16.5,
+    },
+    'r.mulder': {
+      expected: 12,
     },
   },
   discussion: [
     {
-      title: 'Async of niet?',
-      user: 'r.janssen',
-    },
-    {
-      title: 'CSS indent 2 vs 4 spaces',
-      user: 'p.vanmeijgaard',
-    },
-    {
-      title: 'Link all the things!',
-      user: 'r.splithof',
-    },
-    {
-      title: 'Search respects filters!',
-      user: 'r.splithof',
-    },
-    {
-      title: 'Transformer refactor',
-      user: 'p.vanmeijgaard',
+      title: 'GitHub statistics',
+      user: 't.siebers',
     },
   ],
 };
